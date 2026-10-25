@@ -1,0 +1,51 @@
+# Secrets - never commit real API keys
+.env
+.env.*
+!.env.example
+*accessKeys*.csv
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+
+# Tooling
+.pytest_cache/
+.ruff_cache/
+.coverage
+
+# IDE
+.idea/
+*.iml
+
+# Runtime data - generated locally, not source code (uploaded files, ChromaDB's
+# persistent binary index, SQLite metadata db). resources/kb_docs/ is the
+# source-controlled sample set; data/uploads/ is just a runtime copy of it.
+data/
+*.sqlite3
+uvicorn.log
+uvicorn_dev.log
+
+# Written by .claude/scripts/post_write_test.py (the PostToolUse test-runner
+# hook) each time it runs - a transient log, not source code.
+.claude/scripts/last_test_run.log
+
+# Microsoft Word lock files - regenerated every time a .docx is opened, never
+# real content. Keeps reappearing if these get opened again - excluded
+# permanently rather than deleted by hand each time.
+~$*.docx
+
+# Personal IK FDE coursework, not project code.
+docs/ik-fde-course-docs/
+
+# The 7 child repos - each is its own independent git repo with its own
+# GitHub remote, not meant to be tracked/embedded inside this parent repo.
+/hrb_chatbot_service/
+/hrb_chatbot_ui/
+/hrb_api_gateway_service/
+/rag_ingestion_service/
+/rag_retrieval_service/
+/hrb_platform_components/
+/hrb-common-libs/
