@@ -7,13 +7,10 @@ itself.
 
 ## Decide
 
-- [ ] **Parent-repo question.** `hrb_emp_assist` has no git of its own
-  right now. Each of the 7 child folders keeps its own independent git
-  history and GitHub remote regardless - that part is already fine and
-  needs no decision. The only open question is whether you *also* want a
-  brand-new, separate GitHub repo for `hrb_emp_assist` itself (to hold a
-  top-level README about the whole platform, or cross-repo scripts). Not
-  needed unless you have a specific use for it.
+- [x] **Parent-repo question.** Resolved: `hrb_emp_assist` has its own
+  private GitHub repo now (`github.com/rvsree/hrb_emp_assist`, confirmed
+  live 2026-10-26). Each of the 7 child folders still keeps its own
+  independent git history and GitHub remote, unaffected.
 - [ ] **Delete the original `hrb_chatbot_service` folder?** It's still
   sitting at `C:\workspace\2026-v1\interview-kickstart\hrb_chatbot_service`,
   a full duplicate of `hrb_emp_assist\hrb_chatbot_service` (confirmed
@@ -36,8 +33,10 @@ itself.
 
 ## Do, when ready (none urgent)
 
-- [ ] Fix 88 absolute-path references in HTML docs that still point at the
-  old `hrb_chatbot_service` location (need `hrb_emp_assist/` inserted).
+- [x] Fixed, 2026-10-26: all 513 stale `file:///...` references across 86
+  HTML files rewritten to the correct `hrb_emp_assist/`-prefixed, post-reorg
+  path - mechanically resolved (sibling/folder-name matching, not guessed)
+  and every rewritten link verified to point at a real file. 0 unresolved.
 - [ ] Build a VS Code `.code-workspace` file at `hrb_emp_assist/` root for
   the "open everything at once, or any one alone" setup you asked for.
 - [ ] Run `python -m scripts.sync_admin_docs` from inside `hrb_chatbot_service`
@@ -45,6 +44,20 @@ itself.
   `hrb_api_gateway_service` docs/diagrams to S3 + the `doc_metadata` table.
   Say go-ahead explicitly when you want this to happen - it changes what's
   live.
+
+## Cost control - set up 2026-10-25
+
+All 6 App Runner services (`hrb-chatbot`, `hrb-api-gateway`, `hrb-lms-mcp`,
+`rag-ingestion-service`, `rag-retrieval-service`, `hrb-platform-components`)
+were running 24/7, ~$170/month estimated. Now **paused** by default.
+
+- **Before a demo/interview**: `scripts/apprunner-switch.sh resume` (1-2 min
+  to come back up), confirm with `scripts/apprunner-switch.sh status`.
+- **After you're done**: `scripts/apprunner-switch.sh pause` again.
+- **Budget alert**: `hrb-platform-monthly`, $20/month cap, emails you at
+  50/80/100% of actual spend.
+- Neon Postgres may idle separately on its own schedule - unrelated to this
+  script, give it a few seconds to wake on first query after a resume.
 
 ## Already resolved, no action needed
 

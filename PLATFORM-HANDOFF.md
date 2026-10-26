@@ -58,23 +58,62 @@ and GitHub connection are unaffected by living inside `hrb_emp_assist`.
    hooks, skills, agents) for `hrb_chatbot_ui` - it was the one repo of
    the 6 that had none. No fabricated phase history was written; everything
    before 2026-10-25 is marked "pre-SDD, real and shipped, not tracked."
+7. **A separate, later session (2026-10-26)** ran an MVP-1 through MVP-6
+   build against this `hrb_emp_assist` copy specifically - `hrb_chatbot_service`
+   Phases 256-260 (judge-provider selection, the generic `app_settings`/
+   `live_query_store`/`synthetic_dataset_store`, routing-accuracy scoring, the
+   generic Redis `CircuitBreaker`), `hrb_chatbot_ui`'s own Phase 1 (Settings +
+   Live Queries + Synthetic Dataset tabs), and 4 new diagrams (3 under
+   `hrb_chatbot_service/docs/dev-reference/hrb_chatbot_v3/` - state
+   management, conversational-memory STM/LTM, tool-call-audit/routing-accuracy
+   - plus `docs/architecture/platform-current-vs-target-state.html` at this
+   parent level). See `hrb_chatbot_service/docs/agent-reference/RAG-ROADMAP.md`'s
+   Phase 256-260 entries for the detailed build notes.
+
+## Cost control - all 6 App Runner services pause by default
+
+Added 2026-10-25: all 6 services were running continuously (~$170/month
+estimated - App Runner doesn't scale to zero on its own). Now **paused**
+by default. `scripts/apprunner-switch.sh {pause|resume|status}` is the
+switch - `resume` before a demo/interview (~1-2 min to come back), `pause`
+after. A $20/month AWS Budget (`hrb-platform-monthly`) alerts by email at
+50/80/100% as a safety net. Neon Postgres idles on its own separate
+schedule, unrelated to this script.
 
 ## Open decisions - nothing here blocks continuing work
 
-1. **Should `hrb_emp_assist` itself become a git repo?** Not required -
-   each child already has its own git/GitHub, unaffected either way. A
-   parent-level repo would only be useful if you want a top-level README
-   describing the whole platform, or cross-repo scripts, tracked somewhere.
-   No action taken; recommend skipping this unless a concrete need comes up.
+1. **Resolved, 2026-10-26: `hrb_emp_assist` has its own git repo and a
+   private GitHub remote** (`github.com/rvsree/hrb_emp_assist`, confirmed
+   live via `gh repo view`). Each child repo still keeps its own separate
+   git/GitHub, unaffected.
 2. **The original `hrb_chatbot_service` folder still exists** at
    `C:\workspace\2026-v1\interview-kickstart\hrb_chatbot_service` - step 5
    was a *copy*, not a move (this session couldn't move its own project
    root). Decide whether to delete the original once you've confirmed
    you're working from the `hrb_emp_assist` copy going forward - don't
    delete it from a Claude Code session without saying so explicitly first.
-3. **88 hardcoded absolute path references** (`file:///C:/workspace/2026-v1/
-   interview-kickstart/hrb_chatbot_service/...`) in the HTML docs' local-nav
-   scripts now need `hrb_emp_assist/` inserted - found, not yet fixed.
+   **Update, 2026-10-26:** the two copies have since diverged further, in
+   both directions - confirmed by directly listing both, not assumed. The
+   original has `docs/dev-reference/hrb_chatbot_v3/architecture/platform-overview.html`
+   and a new `architecture/diagrams/` folder that the `hrb_emp_assist` copy
+   does not. The `hrb_emp_assist` copy has all of MVP-1 through MVP-5's
+   real work (Phases 256-260: `app_settings`/`live_query_store`/
+   `synthetic_dataset_store`, the generic `CircuitBreaker`, routing-accuracy
+   scoring, `docs/agent-reference/testing-strategies.md`, `hrb_chatbot_ui`'s
+   new Settings/Live Queries/Synthetic Dataset tabs) that the original does
+   not. User confirmed 2026-10-26: `hrb_emp_assist` is the copy to keep
+   working from going forward - the original's extra docs/diagrams still
+   need manually porting over or re-deciding, not done automatically.
+3. **Fixed, 2026-10-26.** 513 hardcoded `file:///C:/workspace/2026-v1/
+   interview-kickstart/hrb_chatbot_service/...` references across 86 HTML
+   files rewritten to the correct `hrb_emp_assist/`-prefixed path - most
+   needed more than just that prefix insertion, since many docs also moved
+   during the 2026-10-23 child-repo reorg and the 2026-10-26 platform/
+   service doc split (e.g. several `deployment-guide/*.html` files moved
+   from `hrb_chatbot_service` up to this parent's own `docs/`). Resolved
+   mechanically (same-directory sibling match, then folder-name narrowing),
+   not guessed - every one of the 513 rewritten links verified afterward to
+   point at a real, existing file.
 4. **VS Code multi-root `.code-workspace` file** - identified as the right
    tool for "one entry point, still able to open any child alone," not yet
    built.
