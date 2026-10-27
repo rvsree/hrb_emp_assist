@@ -33,7 +33,7 @@ fast, not just read about it.
 |---|---|---|
 | Benefits Q&A (RAG chat) | Ask about 401(k), healthcare, tuition, leave or disability policy, get an answer grounded in the real HR knowledge base — 3 interchangeable modes (direct retrieve+generate, single ReAct agent, multi-agent planner+reviewer) | Live |
 | Live HR data lookup | "What's my leave balance?" — answered via a real tool call to live data, not a static document | Live |
-| Unpaid-leave request (HITL) | A real multi-day approval workflow — request submitted, a manager approves days later by email, the conversation resumes exactly where it left off | Live |
+| Unpaid-leave request (HITL) | A real multi-day approval workflow — request submitted, an `hr_support` identity resolves it (approve/reject) days later, the employee is emailed the outcome, the conversation resumes exactly where it left off | Live |
 | Document ingestion | HR uploads a benefits PDF; it's chunked, embedded, indexed so the next question can be answered from it | Live |
 | Admin & platform ops | CI/CD pipeline visibility across all repos, golden-dataset viewer, eval-run history, live metrics, Interview Q&A editor | Live |
 | 401(k) loan guidance | A hub/sub-agent router (loan, withdrawal, transfer, retirement), reusing the planner→domain-agents pattern already proven in multi-agentic-rag | Design only |
