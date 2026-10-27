@@ -40,12 +40,13 @@ uvicorn_dev.log
 # Personal IK FDE coursework, not project code.
 docs/ik-fde-course-docs/
 
-# The 7 child repos - each is its own independent git repo with its own
+# The 8 child repos - each is its own independent git repo with its own
 # GitHub remote, not meant to be tracked/embedded inside this parent repo.
 /hrb_chatbot_service/
 /hrb_chatbot_ui/
 /hrb_api_gateway_service/
-/rag_ingestion_service/
-/rag_retrieval_service/
+/hrb_rag_ingestion_service/
+/hrb_rag_retrieval_service/
 /hrb_platform_components/
-/hrb-common-libs/
+/hrb_common_libs/
+/hrb_lms_mcp/
