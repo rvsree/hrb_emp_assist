@@ -77,7 +77,7 @@
     <span class="stage-label">stage 1 — builder</span>
     <div class="step"><span class="sname">FROM python:3.12-slim AS builder</span><span class="sdesc">3.12 exactly, matching every other service</span></div>
     <div class="arrow">↓</div>
-    <div class="step"><span class="sname">apt-get install git</span><span class="sdesc">Needed only because requirements.txt pins hrb-common-libs via a git+https URL, not a published PyPI package - pip needs git to clone that tag</span></div>
+    <div class="step"><span class="sname">apt-get install git</span><span class="sdesc">Needed only because requirements.txt pins hrb_common_libs via a git+https URL, not a published PyPI package - pip needs git to clone that tag</span></div>
     <div class="arrow">↓</div>
     <div class="step"><span class="sname">COPY requirements.txt + pip install into /opt/venv</span><span class="sdesc">Requirements copied before source, so an ordinary code edit reuses Docker's cached install layer</span></div>
     <span class="stage-label">stage 2 — runtime</span>

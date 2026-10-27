@@ -181,7 +181,7 @@
 <section>
   <h2><span class="h2-num">3</span>Shared library <span class="h2-sub">— not a deployed service, but every backend here depends on it</span></h2>
   <div class="layer-row">
-    <div class="node lib"><span class="nname">hrb-common-libs</span><span class="ndesc">connectors + observability, 10 pip extras in one git-tag-pinned repo (v0.4.0) — not ~10 separate packages, see microservices-interface-matrix.html §2</span></div>
+    <div class="node lib"><span class="nname">hrb_common_libs</span><span class="ndesc">connectors + observability, 10 pip extras in one git-tag-pinned repo (v0.4.0) — not ~10 separate packages, see microservices-interface-matrix.html §2</span></div>
   </div>
   <p style="margin:0;font-size:11.5px;color:var(--text-muted);line-height:1.5;">Used by <span class="mono">hrb_api_gateway_service</span>, <span class="mono">hrb_rag_ingestion_service</span>, <span class="mono">hrb_rag_retrieval_service</span>, and <span class="mono">hrb_platform_components</span> — every repo built during the actual split. <span class="mono">hrb_chatbot_service</span> (pre-split) and <span class="mono">hrb_chatbot_ui</span> (frontend, different language) don't depend on it.</p>
 </section>
@@ -198,7 +198,7 @@
       <tr><td class="key">hrb_rag_ingestion_service</td><td><span class="pill live">live, cut over</span></td><td class="mono" style="font-size:10.5px;">wkfgxanevz.us-east-1.awsapprunner.com</td><td>Extract→chunk→embed→index — both sync (App Runner) and async (Lambda) paths real</td></tr>
       <tr><td class="key">hrb_rag_retrieval_service</td><td><span class="pill standalone">standalone</span></td><td class="mono" style="font-size:10.5px;">mpm3qjkbkc.us-east-1.awsapprunner.com</td><td>Decompose→retrieve→generate — built, deployed, verified, deliberately not cut over</td></tr>
       <tr><td class="key">hrb_platform_components</td><td><span class="pill live">live</span></td><td class="mono" style="font-size:10.5px;">pgmzxemv5z.us-east-1.awsapprunner.com</td><td>CI/CD dashboard, interview Q&amp;A, MCP tool catalog</td></tr>
-      <tr><td class="key">hrb-common-libs</td><td><span class="pill live">in use</span></td><td class="mono" style="font-size:10.5px;">— (library, no URL)</td><td>Shared connectors + observability, pip-installed by 4 of the above</td></tr>
+      <tr><td class="key">hrb_common_libs</td><td><span class="pill live">in use</span></td><td class="mono" style="font-size:10.5px;">— (library, no URL)</td><td>Shared connectors + observability, pip-installed by 4 of the above</td></tr>
     </tbody>
   </table>
   </div>

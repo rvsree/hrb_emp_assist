@@ -74,7 +74,7 @@
 <section>
   <h2><span class="h2-num">1</span>Sync path - container image <span class="h2-sub">Dockerfile - same 2-stage shape as hrb_api_gateway_service's own</span></h2>
   <div class="pipeline">
-    <div class="step"><span class="sname">builder stage</span><span class="sdesc">apt-get git (for the hrb-common-libs pin) → pip install -r requirements.txt into /opt/venv</span></div>
+    <div class="step"><span class="sname">builder stage</span><span class="sdesc">apt-get git (for the hrb_common_libs pin) → pip install -r requirements.txt into /opt/venv</span></div>
     <div class="arrow">↓</div>
     <div class="step"><span class="sname">runtime stage</span><span class="sdesc">non-root user hrbingest (uid 10001) → COPY --from=builder /opt/venv → COPY src ./src → EXPOSE 8300</span></div>
     <div class="arrow">↓</div>
@@ -85,7 +85,7 @@
 <section>
   <h2><span class="h2-num">2</span>Async path - Lambda package <span class="h2-sub">Dockerfile.lambda - a different base image, different runtime shape entirely</span></h2>
   <div class="pipeline">
-    <div class="step"><span class="sname">AWS Lambda Python base image</span><span class="sdesc">dnf install git (not apt-get - this base is RPM-based, not Debian) - a real bug found live: the base image has no git by default, needed for the same hrb-common-libs pin</span></div>
+    <div class="step"><span class="sname">AWS Lambda Python base image</span><span class="sdesc">dnf install git (not apt-get - this base is RPM-based, not Debian) - a real bug found live: the base image has no git by default, needed for the same hrb_common_libs pin</span></div>
     <div class="arrow">↓</div>
     <div class="step"><span class="sname">pip install -r requirements.txt into the Lambda task root</span><span class="sdesc">No spacy/presidio model download here - this repo's own pipeline never imports guardrails code (that stayed retrieval-side)</span></div>
     <div class="arrow">↓</div>

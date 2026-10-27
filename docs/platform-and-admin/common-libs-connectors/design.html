@@ -79,20 +79,20 @@
   <section class="panel">
     <div class="panel-head"><span class="panel-num">2</span><span class="panel-title">pyproject.toml extras (sketch)</span></div>
     <pre>[project]
-name = "hrb-common-libs"
+name = "hrb_common_libs"
 requires-python = ">=3.12,<3.13"
 
 [project.optional-dependencies]
 observability = ["structlog", "tenacity"]
-db = ["hrb-common-libs[observability]", "psycopg[binary]"]
-cache = ["hrb-common-libs[observability]", "redis"]
-llm = ["hrb-common-libs[observability]", "openai", "langchain-openai"]
-mcp = ["hrb-common-libs[observability]", "mcp"]
-storage = ["hrb-common-libs[observability]", "boto3"]
-web = ["hrb-common-libs[observability]", "tavily-python"]
-auth = ["hrb-common-libs[observability]", "pyjwt"]
-email = ["hrb-common-libs[observability]", "boto3"]
-ci = ["hrb-common-libs[observability]", "PyGithub"]</pre>
+db = ["hrb_common_libs[observability]", "psycopg[binary]"]
+cache = ["hrb_common_libs[observability]", "redis"]
+llm = ["hrb_common_libs[observability]", "openai", "langchain-openai"]
+mcp = ["hrb_common_libs[observability]", "mcp"]
+storage = ["hrb_common_libs[observability]", "boto3"]
+web = ["hrb_common_libs[observability]", "tavily-python"]
+auth = ["hrb_common_libs[observability]", "pyjwt"]
+email = ["hrb_common_libs[observability]", "boto3"]
+ci = ["hrb_common_libs[observability]", "PyGithub"]</pre>
   </section>
 
   <section class="panel">
@@ -100,7 +100,7 @@ ci = ["hrb-common-libs[observability]", "PyGithub"]</pre>
     <p><span class="mono">api_gateway_service/requirements.txt</span> — note what's absent: no <span class="mono">llm</span>, no <span class="mono">mcp</span>, no <span class="mono">storage</span>, no <span class="mono">web</span>.</p>
     <pre>fastapi
 uvicorn
-git+https://github.com/rvsree/hrb_common_libs.git@v0.1.0#egg=hrb-common-libs[observability,db,cache,auth]</pre>
+git+https://github.com/rvsree/hrb_common_libs.git@v0.1.0#egg=hrb_common_libs[observability,db,cache,auth]</pre>
   </section>
 
   <footer>Common-Libs Connectors — overview.html, spec.html, architecture.html, design.html, decisions.html</footer>

@@ -78,7 +78,7 @@ surprises.
 | [`hrb_rag_ingestion_service`](https://github.com/rvsree/hrb_rag_ingestion_service) | Extract → chunk → embed → index, sync + async paths | Live, cut over |
 | [`hrb_rag_retrieval_service`](https://github.com/rvsree/hrb_rag_retrieval_service) | Decompose → retrieve → generate — multi-agentic modes, HITL, conversation memory | Live, standalone (not yet cut over) |
 | [`hrb_platform_components`](https://github.com/rvsree/hrb_platform_components) | CI/CD dashboard, Interview Q&A, MCP tool catalog | Live |
-| [`hrb-common-libs`](https://github.com/rvsree/hrb-common-libs) | Shared connectors (observability/db/cache/auth/etc.), pip-installed via git tag | In use |
+| [`hrb_common_libs`](https://github.com/rvsree/hrb_common_libs) | Shared connectors (observability/db/cache/auth/etc.), pip-installed via git tag | In use |
 | [`hrb_lms_mcp`](https://github.com/rvsree/hrb_lms_mcp) | Real HR/leave data via MCP, real app-to-app OAuth2 — separate project, same platform | Live |
 
 Full detail, real resource identifiers, and the honest current-vs-target gap
@@ -95,7 +95,7 @@ here, under `docs/`. Service-specific docs stay inside each repo's own
 | `docs/architecture/` | System/platform overview, microservices interface matrix and rollout plan, service-boundary decisions, DB model overview |
 | `docs/architecture/diagrams/` | Every service's current-state, target-state, and deployment `.drawio` diagrams, indexed |
 | `docs/auth/` | OAuth2 architecture (app-to-app, real; human-to-app, design), separate auth-server scope |
-| `docs/platform-and-admin/` | Docs for `hrb_api_gateway_service`, `hrb-common-libs`, `hrb_platform_components` — hosted here since those repos' own docs are centralized |
+| `docs/platform-and-admin/` | Docs for `hrb_api_gateway_service`, `hrb_common_libs`, `hrb_platform_components` — hosted here since those repos' own docs are centralized |
 | `docs/deployment-and-ops/build-and-deploy/` | Build + deployment architecture for every one of the 7 repos |
 | [docs/observability-governance.md](docs/observability-governance.md) | Which services have real LangSmith tracing vs. just scaffolded env vars, and what tracing data does (and doesn't) support for audit/governance |
 

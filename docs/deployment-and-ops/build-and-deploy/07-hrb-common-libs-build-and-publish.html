@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="claude:viewport-fit-sides" content="cover">
-<title>07 · hrb-common-libs Build and Publish</title>
+<title>07 · hrb_common_libs Build and Publish</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800;900&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
   :root {
@@ -79,15 +79,15 @@
 <div class="wrap">
 
 <header>
-  <span class="eyebrow">07 of 7 · hrb-common-libs · build and publish · 2026-10-23</span>
-  <h1>Build and Publish — hrb-common-libs</h1>
+  <span class="eyebrow">07 of 7 · hrb_common_libs · build and publish · 2026-10-23</span>
+  <h1>Build and Publish — hrb_common_libs</h1>
   <p class="subtitle">The one repo in this system that isn't a running service. A shared connector library, consumed by all 5 Python backends via a git-tag-pinned requirements.txt line - not Docker, not App Runner, and deliberately not ~10 separate PyPI packages.</p>
 </header>
 
 <section>
   <h2><span class="h2-num">1</span>What it actually is</h2>
   <div class="pipeline">
-    <div class="step"><span class="sname">One repo, pip extras instead of separate packages</span><span class="sdesc">hrb-common-libs[llm], [vectordb], [metadata] etc. - a consumer installs only the extras it needs, but there's one version number and one git history, not ten packages to keep in sync</span></div>
+    <div class="step"><span class="sname">One repo, pip extras instead of separate packages</span><span class="sdesc">hrb_common_libs[llm], [vectordb], [metadata] etc. - a consumer installs only the extras it needs, but there's one version number and one git history, not ten packages to keep in sync</span></div>
   </div>
 </section>
 
@@ -100,7 +100,7 @@
     <div class="arrow">↓</div>
     <div class="step"><span class="sname">3. A real version bump gets a git tag</span><span class="sdesc">e.g. v1.4.0 - this tag is the actual release artifact</span></div>
     <div class="arrow">↓</div>
-    <div class="step"><span class="sname">4. Consumer's requirements.txt pins that tag</span><span class="sdesc"><code class="mono">hrb-common-libs[llm,vectordb] @ git+https://github.com/rvsree/hrb-common-libs.git@v1.4.0</code> - this is why every other service's Dockerfile builder stage needs git installed</span></div>
+    <div class="step"><span class="sname">4. Consumer's requirements.txt pins that tag</span><span class="sdesc"><code class="mono">hrb_common_libs[llm,vectordb] @ git+https://github.com/rvsree/hrb_common_libs.git@v1.4.0</code> - this is why every other service's Dockerfile builder stage needs git installed</span></div>
     <div class="arrow">↓</div>
     <div class="step"><span class="sname">5. pip install clones that exact tag during each service's own Docker build</span><span class="sdesc">No separate publish step, no private PyPI index to run - the git tag itself is the distribution mechanism</span></div>
   </div>
@@ -109,7 +109,7 @@
 <section>
   <h2><span class="h2-num">3</span>Where it's actually pulled in</h2>
   <div class="diagram">
-    <div class="node infra"><span class="nname">hrb-common-libs @ a pinned git tag</span></div>
+    <div class="node infra"><span class="nname">hrb_common_libs @ a pinned git tag</span></div>
     <div class="arrow">↓ pulled into each of these services' own builder stage</div>
     <div class="row">
       <div class="node infra"><span class="nname">hrb_api_gateway_service</span></div>
@@ -127,7 +127,7 @@
   <table class="data-table">
     <thead><tr><th>Approach</th><th>Why not used here</th></tr></thead>
     <tbody>
-      <tr><td class="key">Pin to main branch</td><td>A new commit to hrb-common-libs would silently change what every consumer builds on its next Docker build - no coordinated rollout, no way to roll back one service without affecting the rest</td></tr>
+      <tr><td class="key">Pin to main branch</td><td>A new commit to hrb_common_libs would silently change what every consumer builds on its next Docker build - no coordinated rollout, no way to roll back one service without affecting the rest</td></tr>
       <tr><td class="key">Separate PyPI packages per extra</td><td>Ten packages means ten version numbers to keep compatible with each other - rejected for the same reason the gateway/enum pattern exists elsewhere in this system: one source of truth beats several that can drift</td></tr>
       <tr><td class="key">Pin to an exact git tag (actual choice)</td><td>Every consumer's build is reproducible and explicit about which version it's on; bumping is a one-line requirements.txt change per service, done deliberately</td></tr>
     </tbody>

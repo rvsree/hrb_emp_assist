@@ -88,7 +88,7 @@
 uvicorn
 httpx                    # forwarding requests to backend services
 pydantic
-git+https://github.com/rvsree/hrb_common_libs.git@v0.1.0#egg=hrb-common-libs[observability,db,cache,auth]</pre>
+git+https://github.com/rvsree/hrb_common_libs.git@v0.1.0#egg=hrb_common_libs[observability,db,cache,auth]</pre>
     <p>Notably absent: <span class="mono">openai</span>, <span class="mono">langchain</span>, <span class="mono">mcp</span>, <span class="mono">boto3</span>, <span class="mono">tavily-python</span>, <span class="mono">psycopg</span> for any RAG-specific table. This service cannot accidentally call an LLM or an MCP tool even if someone tried - the dependency isn't installed.</p>
   </section>
 

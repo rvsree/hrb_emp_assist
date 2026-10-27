@@ -73,7 +73,7 @@
   <h2><span class="h2-num">1</span>Docker image - 2-stage build <span class="h2-sub">no ML model downloads, no PII masking - this service never touches chat content</span></h2>
   <div class="pipeline">
     <span class="stage-label">stage 1 — builder</span>
-    <div class="step"><span class="sname">FROM python:3.12-slim AS builder, apt-get git</span><span class="sdesc">Same hrb-common-libs git+https pin as every other service</span></div>
+    <div class="step"><span class="sname">FROM python:3.12-slim AS builder, apt-get git</span><span class="sdesc">Same hrb_common_libs git+https pin as every other service</span></div>
     <div class="arrow">↓</div>
     <div class="step"><span class="sname">pip install -r requirements.txt into /opt/venv</span><span class="sdesc">fastapi/uvicorn/sqlalchemy/psycopg2-binary - no openai/anthropic/langchain, no presidio/spacy</span></div>
     <span class="stage-label">stage 2 — runtime</span>

@@ -21,7 +21,7 @@ checked directly against each repo's own code, not assumed:
 | `hrb_rag_ingestion_service` | Yes - metadata extraction during ingestion (`pipeline/metadata_extractor.py`) | **Scaffolded, not wired** - same gap, `LANGSMITH_PROJECT` set, no code |
 | `hrb_platform_components` | No - confirmed zero LLM-calling files in its own `src/` | N/A (its own `.env.example` carries the var anyway, leftover from the split template - harmless, just unused) |
 | `hrb_chatbot_ui` | No (frontend, calls the backend API) | N/A |
-| `hrb-common-libs` | No (a library, not a running service) | N/A |
+| `hrb_common_libs` | No (a library, not a running service) | N/A |
 | `hrb_lms_mcp` | No (structured-data MCP server, not an LLM caller itself) | N/A |
 
 ```mermaid
@@ -32,7 +32,7 @@ flowchart TD
     D[hrb_rag_ingestion_service] -.->|scaffolded only| L
     E[hrb_platform_components]
     F[hrb_chatbot_ui]
-    G[hrb-common-libs]
+    G[hrb_common_libs]
     H[hrb_lms_mcp]
 ```
 
