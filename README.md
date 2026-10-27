@@ -49,6 +49,13 @@ aesthetic — three concrete things drove it:
 rate-limiting. Pulling that into one API Gateway (`hrb_api_gateway_service`)
 means every other service can lock its CORS down to "only accept traffic
 from the Gateway" and stop re-implementing the same cross-cutting code.
+Worth being precise about what this actually buys: CORS only stops a
+*browser* from calling the backend directly - it does nothing against a
+server-to-server call or `curl`. Today the backend (`hrb_chatbot_service`)
+still allows the production frontend's origin directly too, as a fallback -
+so the Gateway's rate-limiting can currently be bypassed by calling the
+backend directly. Real isolation would mean actually closing that direct
+path, not yet done.
 
 **Scaling independently.** Ingestion is bursty and I/O-bound (PDF
 processing, embedding calls); retrieval is steady and compute-bound (LLM
