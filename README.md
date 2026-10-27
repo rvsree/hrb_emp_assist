@@ -2,7 +2,7 @@
 
 Parent project for the HRB (HR Benefits) chatbot platform — an HR benefits
 assistant built as an Interview Kickstart FDE (Forward Deployed Engineer)
-capstone, grown from a single monolith into a real 8-repo platform (6
+capstone, grown from a single monolith into an 8-repo platform (6
 deployed backend services, 1 frontend SPA, 1 shared library).
 This folder holds all 8 of those components as independent git repos (each with
 its own GitHub remote and history, unaffected by living here), plus the
@@ -17,7 +17,7 @@ fast, not just read about it.
 
 1. [docs/architecture/platform-overview.html](docs/architecture/platform-overview.html) —
    the one page to start from: every business capability, which of the 8
-   real repos realizes it, one diagram tying it together, links into every
+   repos realizes it, one diagram tying it together, links into every
    component's own detailed docs.
 2. The capability table and repo table below — same information, in plain
    markdown, if you'd rather not open an HTML file.
@@ -27,13 +27,21 @@ fast, not just read about it.
 4. [PLATFORM-HANDOFF.md](PLATFORM-HANDOFF.md) — if you're picking this up
    with no prior context, written for exactly that.
 
+## Live demo
+
+**[hrb-chatbot-ui.rvsree.dev](https://hrb-chatbot-ui.rvsree.dev)** - log in as
+any persona from `hrb_chatbot_service/docs/agent-reference/KNOWN-PERSONAS.md`
+(e.g. `EMP052` / Eddy Employee / employee). Backend services pause by default
+for cost control (`scripts/apprunner-switch.sh {pause|resume|status}`) - if a
+request hangs instead of answering, they're spinning back up, not broken.
+
 ## What this platform actually does
 
 | Capability | What it means | Status |
 |---|---|---|
-| Benefits Q&A (RAG chat) | Ask about 401(k), healthcare, tuition, leave or disability policy, get an answer grounded in the real HR knowledge base — 3 interchangeable modes (direct retrieve+generate, single ReAct agent, multi-agent planner+reviewer) | Live |
-| Live HR data lookup | "What's my leave balance?" — answered via a real tool call to live data, not a static document | Live |
-| Unpaid-leave request (HITL) | A real multi-day approval workflow — request submitted, an `hr_support` identity resolves it (approve/reject) days later, the employee is emailed the outcome, the conversation resumes exactly where it left off | Live |
+| Benefits Q&A (RAG chat) | Ask about 401(k), healthcare, tuition, leave or disability policy, get an answer grounded in the actual HR knowledge base — 3 interchangeable modes (direct retrieve+generate, single ReAct agent, multi-agent planner+reviewer) | Live |
+| Live HR data lookup | "What's my leave balance?" — answered via an actual tool call to live data, not a static document | Live |
+| Unpaid-leave request (HITL) | A multi-day approval workflow — request submitted, an `hr_support` identity resolves it (approve/reject) days later, the employee is emailed the outcome, the conversation resumes exactly where it left off | Live |
 | Document ingestion | HR uploads a benefits PDF; it's chunked, embedded, indexed so the next question can be answered from it | Live |
 | Admin & platform ops | CI/CD pipeline visibility across all repos, golden-dataset viewer, eval-run history, live metrics, Interview Q&A editor | Live |
 | 401(k) loan guidance | A hub/sub-agent router (loan, withdrawal, transfer, retirement), reusing the planner→domain-agents pattern already proven in multi-agentic-rag | Design only |
@@ -73,7 +81,7 @@ proven in `hrb_rag_retrieval_service`'s multi-agentic mode.
 Gateway forwards every request to a single backend today — it doesn't yet
 aggregate across services the way a full API Gateway eventually will, and
 `hrb_rag_retrieval_service` is deployed and verified but not yet the one
-receiving real production traffic. Both are known, scoped next steps, not
+receiving live production traffic. Both are known, scoped next steps, not
 surprises.
 
 ## The 8 components
@@ -82,14 +90,14 @@ surprises.
 |---|---|---|
 | [`hrb_chatbot_ui`](https://github.com/rvsree/hrb_chatbot_ui) | Frontend SPA (React) | Live |
 | [`hrb_api_gateway_service`](https://github.com/rvsree/hrb_api_gateway_service) | Single public entry point — CORS, rate limiting, contract validation | Live |
-| [`hrb_chatbot_service`](https://github.com/rvsree/hrb_chatbot_service) | Pre-split monolith; still the real retrieval backend in production today | Live |
+| [`hrb_chatbot_service`](https://github.com/rvsree/hrb_chatbot_service) | Pre-split monolith; still the active retrieval backend in production today | Live |
 | [`hrb_rag_ingestion_service`](https://github.com/rvsree/hrb_rag_ingestion_service) | Extract → chunk → embed → index, sync + async paths | Live, cut over |
 | [`hrb_rag_retrieval_service`](https://github.com/rvsree/hrb_rag_retrieval_service) | Decompose → retrieve → generate — multi-agentic modes, HITL, conversation memory | Live, standalone (not yet cut over) |
 | [`hrb_platform_components`](https://github.com/rvsree/hrb_platform_components) | CI/CD dashboard, Interview Q&A, MCP tool catalog | Live |
 | [`hrb_common_libs`](https://github.com/rvsree/hrb_common_libs) | Shared connectors (observability/db/cache/auth/etc.), pip-installed via git tag | In use |
-| [`hrb_lms_mcp`](https://github.com/rvsree/hrb_lms_mcp) | Real HR/leave data via MCP, real app-to-app OAuth2 — separate project, same platform | Live |
+| [`hrb_lms_mcp`](https://github.com/rvsree/hrb_lms_mcp) | Live HR/leave data via MCP, real app-to-app OAuth2 — separate project, same platform | Live |
 
-Full detail, real resource identifiers, and the honest current-vs-target gap
+Full detail, resource identifiers, and the honest current-vs-target gap
 for each one: [docs/architecture/platform-overview.html](docs/architecture/platform-overview.html).
 
 ## Documentation map
