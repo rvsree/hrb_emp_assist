@@ -166,7 +166,7 @@
     <span class="legend-item"><span class="dot later"></span>Conditional (not yet)</span>
     <span class="legend-item"><span class="dot reuse"></span>Reuse as-is</span>
     <span class="legend-item"><span class="dot risk"></span>Verified gap</span>
-    <span class="legend-item"><span class="dot unknown"></span>Unverified — needs you</span>
+    <span class="legend-item"><span class="dot unknown"></span>Unverified — needs confirmation</span>
   </div>
 </header>
 
@@ -176,14 +176,14 @@
 </div>
 
 <div class="quickfact">
-  <span class="qtitle">Renaming <code class="mono">hrb_chatbot_service</code> → <code class="mono">hrb_chatbot_service</code> — verified cost, cheaper than it looks</span>
+  <span class="qtitle">Renaming <code class="mono">hrb_chatbot_v2</code> → <code class="mono">hrb_chatbot_service</code> — verified cost, cheaper than it looks</span>
   <div class="qf-grid">
     <div class="qf-row"><span>GitHub repo + local folder name</span><span class="qf-cost cheap">cheap</span></div>
     <div class="qf-row"><span>AWS: ECR repo, App Runner service, IAM user</span><span class="qf-cost cheap">no change needed*</span></div>
     <div class="qf-row"><span>LangSmith project base_name (1 line, code)</span><span class="qf-cost cheap">cheap</span></div>
     <div class="qf-row"><span>CI-only test DB name (eval-gate.yml)</span><span class="qf-cost cheap">cosmetic only</span></div>
   </div>
-  <p style="margin:0;font-size:11.5px;color:var(--text-muted);line-height:1.5;">*Checked directly: your AWS resources are already named <code class="mono">hrb-chatbot</code>, not <code class="mono">hrb-chatbot-service</code> — the expensive part (App Runner service names are immutable after creation, would otherwise mean delete+recreate) doesn't apply. The rename is genuinely low-risk — mostly repo/folder/docs, not infra.</p>
+  <p style="margin:0;font-size:11.5px;color:var(--text-muted);line-height:1.5;">*Checked directly: the AWS resources are already named <code class="mono">hrb-chatbot</code>, not <code class="mono">hrb-chatbot-service</code> — the expensive part (App Runner service names are immutable after creation, would otherwise mean delete+recreate) doesn't apply. The rename is genuinely low-risk — mostly repo/folder/docs, not infra.</p>
 </div>
 
 <section>
@@ -191,7 +191,7 @@
   <div class="service-grid">
     <div class="service-card exists"><span class="status-tag">EXISTS</span><span class="sname">hrb_chatbot_service</span><span class="sdesc">today's one process — ingestion + retrieval + support — FastAPI / App Runner</span></div>
     <div class="service-card exists"><span class="status-tag">EXISTS</span><span class="sname">hrb_chatbot_ui</span><span class="sdesc">Frontend SPA — React / S3 + CloudFront</span></div>
-    <div class="service-card exists"><span class="status-tag">EXISTS*</span><span class="sname">hrb_lms_mcp</span><span class="sdesc">MCP server — built &amp; proven locally; AWS wiring is your still-open plan</span></div>
+    <div class="service-card exists"><span class="status-tag">EXISTS*</span><span class="sname">hrb_lms_mcp</span><span class="sdesc">MCP server — built &amp; proven locally; AWS wiring is a still-open follow-up</span></div>
   </div>
   <div class="split-arrow">↓ recommended split of hrb_chatbot_service — done, 2026-10-23 ↓</div>
   <div class="service-grid">
@@ -301,11 +301,11 @@
 <section>
   <h2><span class="h2-num">6</span>Interview Q&amp;A coverage audit <span class="h2-sub">— incomplete, honestly</span></h2>
   <div class="coverage-box">
-    <span class="ctitle">Could not verify the live topic list</span>
-    <p>Tried to query <code class="mono">interview_qa_cards</code> directly (read-only) from this sandbox — general internet egress works, but DNS resolution to the configured Neon host specifically failed, most likely a network allowlist here, not a real outage. The frontend derives its topic list dynamically from live rows (<code class="mono">AdminDashboardPage.tsx:669</code>) — there's no static file to fall back on, by design (Phase 187 deliberately made this live-edited DB content, not a file mirror).</p>
-    <p>The only proxy I found is 4 pre-Phase-187 static <code class="mono">interview-faq.html</code> pages (chunking-strategy, genai-rag-chat, rag-ingestion, retrieval-strategies) — these predate the live-DB migration, so they're not reliable evidence of what's in the table now.</p>
-    <span class="ctitle" style="margin-top:4px;">What I need from you</span>
-    <p>Open Admin Dashboard → Interview Q&amp;A → the "All topics" dropdown, and tell me what's listed (or paste a <code class="mono">GET /v1/admin/interview-qa</code> response). Then I can give you a real yes/no against:</p>
+    <span class="ctitle">Live topic list not yet verified</span>
+    <p>The frontend derives its topic list dynamically from live rows (<code class="mono">AdminDashboardPage.tsx:669</code>) — there's no static file to fall back on, by design (Phase 187 deliberately made this live-edited DB content, not a file mirror). Network access to the configured Neon host from the environment this audit ran in was blocked, so the live list couldn't be queried directly for this pass.</p>
+    <p>The only proxy available is 4 pre-Phase-187 static <code class="mono">interview-faq.html</code> pages (chunking-strategy, genai-rag-chat, rag-ingestion, retrieval-strategies) — these predate the live-DB migration, so they're not reliable evidence of what's in the table now.</p>
+    <span class="ctitle" style="margin-top:4px;">Open item</span>
+    <p>Confirm the real current topic list via Admin Dashboard → Interview Q&amp;A → the "All topics" dropdown (or <code class="mono">GET /v1/admin/interview-qa</code>), then check it against:</p>
     <div class="ask-list">
       <span class="ask-chip">MCP (Server/Client/Host/Registry/Gateway)</span>
       <span class="ask-chip">A2A</span>

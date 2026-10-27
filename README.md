@@ -2,8 +2,9 @@
 
 Parent project for the HRB (HR Benefits) chatbot platform — an HR benefits
 assistant built as an Interview Kickstart FDE (Forward Deployed Engineer)
-capstone, grown from a single monolith into a real 8-component system.
-This folder holds 7 of those components as independent git repos (each with
+capstone, grown from a single monolith into a real 8-repo platform (6
+deployed backend services, 1 frontend SPA, 1 shared library).
+This folder holds all 8 of those components as independent git repos (each with
 its own GitHub remote and history, unaffected by living here), plus the
 platform-level documentation that spans more than one of them.
 
@@ -96,7 +97,7 @@ here, under `docs/`. Service-specific docs stay inside each repo's own
 | `docs/architecture/diagrams/` | Every service's current-state, target-state, and deployment `.drawio` diagrams, indexed |
 | `docs/auth/` | OAuth2 architecture (app-to-app, real; human-to-app, design), separate auth-server scope |
 | `docs/platform-and-admin/` | Docs for `hrb_api_gateway_service`, `hrb_common_libs`, `hrb_platform_components` — hosted here since those repos' own docs are centralized |
-| `docs/deployment-and-ops/build-and-deploy/` | Build + deployment architecture for every one of the 7 repos |
+| `docs/deployment-and-ops/build-and-deploy/` | Build + deployment architecture for every deployed repo |
 | [docs/observability-governance.md](docs/observability-governance.md) | Which services have real LangSmith tracing vs. just scaffolded env vars, and what tracing data does (and doesn't) support for audit/governance |
 
 | Per-repo (service-specific) | Where |
@@ -114,15 +115,15 @@ here, under `docs/`. Service-specific docs stay inside each repo's own
 ## Functional vs non-functional status — where this platform is, honestly
 
 This project tracks its own gaps openly rather than only showing what's
-done. A full, sequenced breakdown of what's built vs planned (datasets,
-observability/governance, resiliency, memory architecture, and more) lives
-in the working session history — ask for the latest status table, or see
-`PLATFORM-HANDOFF.md`'s "Open decisions" section for the standing list.
+done. See `PLATFORM-HANDOFF.md`'s "Open decisions" section and each
+repo's own `BACKLOG.md`/`ROADMAP.md` for the full, sequenced breakdown of
+what's built vs. planned (datasets, observability/governance, resiliency,
+memory architecture, and more).
 
 ## Status
 
 Reorganized 2026-10-24 into this parent-folder structure; platform-level
-docs split out 2026-10-26. Each of the 7 child repos is independently
+docs split out 2026-10-26. Each of the 8 child repos is independently
 deployed and versioned — see each one's own `README.md` for its specific
 build/run/test instructions. This parent folder itself is a separate,
 private GitHub repo ([github.com/rvsree/hrb_emp_assist](https://github.com/rvsree/hrb_emp_assist)),
