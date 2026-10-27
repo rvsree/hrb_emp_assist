@@ -165,7 +165,7 @@
       <tr>
         <td class="key">Benefits Q&amp;A (RAG chat)</td>
         <td>Ask a question about 401(k), healthcare, tuition, leave or disability policy, get an answer grounded in the real HR knowledge base - 3 interchangeable modes (direct retrieve+generate, single ReAct agent, multi-agent planner+reviewer)</td>
-        <td class="mono">hrb_chatbot_service<br>(rag_retrieval_service, standalone)</td>
+        <td class="mono">hrb_chatbot_service<br>(hrb_rag_retrieval_service, standalone)</td>
         <td><span class="pill live">live</span></td>
         <td><a href="../../hrb_chatbot_service/docs/dev-reference/hrb_chatbot_v3/rag-pipeline/retrieval/genai-rag-chat/architecture.html">genai-rag-chat/architecture.html</a><br><a href="../../hrb_chatbot_service/docs/dev-reference/hrb_chatbot_v3/rag-pipeline/retrieval/multi-agentic-rag/overview.html">multi-agentic-rag/overview.html</a></td>
       </tr>
@@ -186,7 +186,7 @@
       <tr>
         <td class="key">Document ingestion</td>
         <td>HR uploads a new or updated benefits PDF; it's chunked, embedded and indexed so the next question can be answered from it - a different, bursty, write-heavy traffic shape from every chat capability above</td>
-        <td class="mono">rag_ingestion_service</td>
+        <td class="mono">hrb_rag_ingestion_service</td>
         <td><span class="pill live">live</span></td>
         <td><a href="../../hrb_chatbot_service/docs/dev-reference/_archive/rag-pipeline/rag-ingestion/architecture.html">rag-ingestion/architecture.html</a></td>
       </tr>
@@ -214,7 +214,7 @@
     </tbody>
   </table>
   </div>
-  <p style="margin:0;font-size:11.5px;color:var(--text-muted);line-height:1.5;">Every row above is traced hop-by-hop, with the real protocol at each hop, in <a href="../../hrb_chatbot_service/docs/dev-reference/hrb_chatbot_v3/reference/user-journey-capability-map.html">user-journey-capability-map.html</a> - this table is that doc's own synthesis, not a re-derivation. <b>One real nuance that doc states as already-true but isn't yet</b>: it names <span class="mono">rag_retrieval_service</span> as the backend behind capabilities 1-3 - that's the intended steady state, but as of today the Gateway's own <span class="mono">BACKEND_SERVICE_URL</span> still points at <span class="mono">hrb_chatbot_service</span> (see the diagram below and <a href="system-architecture-overview.html">system-architecture-overview.html</a>). Shown correctly here, not silently matched to the other file's framing.</p>
+  <p style="margin:0;font-size:11.5px;color:var(--text-muted);line-height:1.5;">Every row above is traced hop-by-hop, with the real protocol at each hop, in <a href="../../hrb_chatbot_service/docs/dev-reference/hrb_chatbot_v3/reference/user-journey-capability-map.html">user-journey-capability-map.html</a> - this table is that doc's own synthesis, not a re-derivation. <b>One real nuance that doc states as already-true but isn't yet</b>: it names <span class="mono">hrb_rag_retrieval_service</span> as the backend behind capabilities 1-3 - that's the intended steady state, but as of today the Gateway's own <span class="mono">BACKEND_SERVICE_URL</span> still points at <span class="mono">hrb_chatbot_service</span> (see the diagram below and <a href="system-architecture-overview.html">system-architecture-overview.html</a>). Shown correctly here, not silently matched to the other file's framing.</p>
 </section>
 
 <section>
@@ -240,8 +240,8 @@
       <a class="node live" href="../deployment-and-ops/build-and-deploy/03b-hrb-chatbot-service-deployment-architecture.html" aria-label="hrb_chatbot_service deployment architecture">
         <span class="nname">hrb_chatbot_service</span><span class="ndesc">pre-split monolith — Benefits Q&amp;A, live HR lookup, HITL leave workflow</span>
       </a>
-      <a class="node standalone" href="../deployment-and-ops/build-and-deploy/05b-rag-retrieval-service-deployment-architecture.html" aria-label="rag_retrieval_service deployment architecture">
-        <span class="nname">rag_retrieval_service</span><span class="ndesc">standalone — built, verified, deliberately not cut over</span>
+      <a class="node standalone" href="../deployment-and-ops/build-and-deploy/05b-rag-retrieval-service-deployment-architecture.html" aria-label="hrb_rag_retrieval_service deployment architecture">
+        <span class="nname">hrb_rag_retrieval_service</span><span class="ndesc">standalone — built, verified, deliberately not cut over</span>
       </a>
       <a class="node live" href="../deployment-and-ops/build-and-deploy/06b-hrb-platform-components-deployment-architecture.html" aria-label="hrb_platform_components deployment architecture">
         <span class="nname">hrb_platform_components</span><span class="ndesc">admin &amp; platform ops — zero LLM involvement</span>
@@ -249,8 +249,8 @@
     </div>
     <div class="layer-arrow">↓ document ingestion (own traffic shape, admin-triggered)</div>
     <div class="layer-row row-grid">
-      <a class="node live" href="../deployment-and-ops/build-and-deploy/04b-rag-ingestion-service-deployment-architecture.html" aria-label="rag_ingestion_service deployment architecture">
-        <span class="nname">rag_ingestion_service</span><span class="ndesc">extract → chunk → embed → index — sync App Runner + async Lambda</span>
+      <a class="node live" href="../deployment-and-ops/build-and-deploy/04b-rag-ingestion-service-deployment-architecture.html" aria-label="hrb_rag_ingestion_service deployment architecture">
+        <span class="nname">hrb_rag_ingestion_service</span><span class="ndesc">extract → chunk → embed → index — sync App Runner + async Lambda</span>
       </a>
     </div>
     <div class="layer-arrow">↓ real outbound calls, every backend above</div>
@@ -271,7 +271,7 @@
       </a>
     </div>
   </div>
-  <div class="fix-note"><span>↳</span><div><b>Why hrb_chatbot_service, not rag_retrieval_service, sits in the live path above:</b> the split produced a real, verified, standalone replacement for the query half of the monolith - but the cutover itself (flipping the Gateway's <span class="mono">BACKEND_SERVICE_URL</span>) is a deliberate, still-pending decision, not an oversight. See <a href="system-architecture-overview.html">system-architecture-overview.html</a> for the full technical request-flow trace this diagram summarizes.</div></div>
+  <div class="fix-note"><span>↳</span><div><b>Why hrb_chatbot_service, not hrb_rag_retrieval_service, sits in the live path above:</b> the split produced a real, verified, standalone replacement for the query half of the monolith - but the cutover itself (flipping the Gateway's <span class="mono">BACKEND_SERVICE_URL</span>) is a deliberate, still-pending decision, not an oversight. See <a href="system-architecture-overview.html">system-architecture-overview.html</a> for the full technical request-flow trace this diagram summarizes.</div></div>
 </section>
 
 <section>
@@ -283,8 +283,8 @@
       <tr><td class="key">hrb_chatbot_ui</td><td><span class="pill live">live</span></td><td>Frontend SPA</td><td><a href="../deployment-and-ops/build-and-deploy/01a-hrb-chatbot-ui-build-process.html">01a</a></td><td><a href="../deployment-and-ops/build-and-deploy/01b-hrb-chatbot-ui-deployment-architecture.html">01b</a></td></tr>
       <tr><td class="key">hrb_api_gateway_service</td><td><span class="pill live">live</span></td><td>Single public entry point</td><td><a href="../deployment-and-ops/build-and-deploy/02a-hrb-api-gateway-service-build-process.html">02a</a></td><td><a href="../deployment-and-ops/build-and-deploy/02b-hrb-api-gateway-service-deployment-architecture.html">02b</a></td></tr>
       <tr><td class="key">hrb_chatbot_service</td><td><span class="pill live">live</span></td><td>Pre-split monolith, real retrieval backend</td><td><a href="../deployment-and-ops/build-and-deploy/03a-hrb-chatbot-service-build-process.html">03a</a></td><td><a href="../deployment-and-ops/build-and-deploy/03b-hrb-chatbot-service-deployment-architecture.html">03b</a></td></tr>
-      <tr><td class="key">rag_ingestion_service</td><td><span class="pill live">live, cut over</span></td><td>Extract→chunk→embed→index, sync + async</td><td><a href="../deployment-and-ops/build-and-deploy/04a-rag-ingestion-service-build-process.html">04a</a></td><td><a href="../deployment-and-ops/build-and-deploy/04b-rag-ingestion-service-deployment-architecture.html">04b</a></td></tr>
-      <tr><td class="key">rag_retrieval_service</td><td><span class="pill standalone">standalone</span></td><td>Decompose→retrieve→generate, not cut over</td><td><a href="../deployment-and-ops/build-and-deploy/05a-rag-retrieval-service-build-process.html">05a</a></td><td><a href="../deployment-and-ops/build-and-deploy/05b-rag-retrieval-service-deployment-architecture.html">05b</a></td></tr>
+      <tr><td class="key">hrb_rag_ingestion_service</td><td><span class="pill live">live, cut over</span></td><td>Extract→chunk→embed→index, sync + async</td><td><a href="../deployment-and-ops/build-and-deploy/04a-rag-ingestion-service-build-process.html">04a</a></td><td><a href="../deployment-and-ops/build-and-deploy/04b-rag-ingestion-service-deployment-architecture.html">04b</a></td></tr>
+      <tr><td class="key">hrb_rag_retrieval_service</td><td><span class="pill standalone">standalone</span></td><td>Decompose→retrieve→generate, not cut over</td><td><a href="../deployment-and-ops/build-and-deploy/05a-rag-retrieval-service-build-process.html">05a</a></td><td><a href="../deployment-and-ops/build-and-deploy/05b-rag-retrieval-service-deployment-architecture.html">05b</a></td></tr>
       <tr><td class="key">hrb_platform_components</td><td><span class="pill live">live</span></td><td>CI/CD dashboard, interview Q&amp;A, MCP catalog</td><td><a href="../deployment-and-ops/build-and-deploy/06a-hrb-platform-components-build-process.html">06a</a></td><td><a href="../deployment-and-ops/build-and-deploy/06b-hrb-platform-components-deployment-architecture.html">06b</a></td></tr>
       <tr><td class="key">hrb-common-libs</td><td><span class="pill live">in use</span></td><td>Shared connectors, pip-installed (library, no URL)</td><td colspan="2" style="text-align:center;"><a href="../deployment-and-ops/build-and-deploy/07-hrb-common-libs-build-and-publish.html">07 — build + publish</a></td></tr>
       <tr><td class="key">hrb_lms_mcp</td><td><span class="pill live">live</span></td><td>Separate project — real leave/HR data, own OAuth2</td><td colspan="2" style="text-align:center;"><a href="../auth/oauth2-auth-architecture.html">oauth2-auth-architecture.html</a></td></tr>

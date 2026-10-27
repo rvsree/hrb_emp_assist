@@ -150,17 +150,17 @@
     <div class="layer-row">
       <div class="row-grid">
         <div class="node live"><span class="nname">hrb_chatbot_service</span><span class="ndesc">still the live retrieval backend — the pre-split monolith, not yet decommissioned</span><span class="nurl">hrb-chatbot.rvsree.dev</span></div>
-        <div class="node live"><span class="nname">rag_ingestion_service</span><span class="ndesc">extract→chunk→embed→index · sync App Runner + async Lambda, both cut over</span><span class="nurl">wkfgxanevz.us-east-1.awsapprunner.com</span></div>
-        <div class="node standalone"><span class="nname">rag_retrieval_service</span><span class="ndesc">decompose→retrieve→generate · built, deployed, independently verified — NOT cut over</span><span class="nurl">mpm3qjkbkc.us-east-1.awsapprunner.com</span></div>
+        <div class="node live"><span class="nname">hrb_rag_ingestion_service</span><span class="ndesc">extract→chunk→embed→index · sync App Runner + async Lambda, both cut over</span><span class="nurl">wkfgxanevz.us-east-1.awsapprunner.com</span></div>
+        <div class="node standalone"><span class="nname">hrb_rag_retrieval_service</span><span class="ndesc">decompose→retrieve→generate · built, deployed, independently verified — NOT cut over</span><span class="nurl">mpm3qjkbkc.us-east-1.awsapprunner.com</span></div>
         <div class="node live"><span class="nname">hrb_platform_components</span><span class="ndesc">CI/CD dashboard, interview Q&amp;A, MCP catalog — its own service, not co-located</span><span class="nurl">pgmzxemv5z.us-east-1.awsapprunner.com</span></div>
       </div>
     </div>
     <div class="layer-arrow">↓</div>
     <div class="layer-row">
-      <div class="node live"><span class="nname">hrb_lms_mcp</span><span class="ndesc">MCP server — leave balance/history tools. Called by hrb_chatbot_service, rag_retrieval_service, hrb_platform_components over real OAuth2 client-credentials</span><span class="nurl">hrb-lms-mcp.rvsree.dev</span></div>
+      <div class="node live"><span class="nname">hrb_lms_mcp</span><span class="ndesc">MCP server — leave balance/history tools. Called by hrb_chatbot_service, hrb_rag_retrieval_service, hrb_platform_components over real OAuth2 client-credentials</span><span class="nurl">hrb-lms-mcp.rvsree.dev</span></div>
     </div>
   </div>
-  <div class="fix-note"><span>↳</span><div><b>Why both <span class="mono">hrb_chatbot_service</span> and <span class="mono">rag_retrieval_service</span> are "live":</b> the Gateway's <span class="mono">BACKEND_SERVICE_URL</span> still points at <span class="mono">hrb_chatbot_service</span> today — that's genuinely what answers a real retrieval query right now. <span class="mono">rag_retrieval_service</span> is a complete, independently-deployed, independently-verified parallel implementation of the same retrieval logic, proven via a real multi-turn Playwright suite against its own live URL — it just isn't the one in the request path yet. Cutting it over is a separate, deliberate decision, not a readiness gap.</div></div>
+  <div class="fix-note"><span>↳</span><div><b>Why both <span class="mono">hrb_chatbot_service</span> and <span class="mono">hrb_rag_retrieval_service</span> are "live":</b> the Gateway's <span class="mono">BACKEND_SERVICE_URL</span> still points at <span class="mono">hrb_chatbot_service</span> today — that's genuinely what answers a real retrieval query right now. <span class="mono">hrb_rag_retrieval_service</span> is a complete, independently-deployed, independently-verified parallel implementation of the same retrieval logic, proven via a real multi-turn Playwright suite against its own live URL — it just isn't the one in the request path yet. Cutting it over is a separate, deliberate decision, not a readiness gap.</div></div>
 </section>
 
 <section>
@@ -183,7 +183,7 @@
   <div class="layer-row">
     <div class="node lib"><span class="nname">hrb-common-libs</span><span class="ndesc">connectors + observability, 10 pip extras in one git-tag-pinned repo (v0.4.0) — not ~10 separate packages, see microservices-interface-matrix.html §2</span></div>
   </div>
-  <p style="margin:0;font-size:11.5px;color:var(--text-muted);line-height:1.5;">Used by <span class="mono">hrb_api_gateway_service</span>, <span class="mono">rag_ingestion_service</span>, <span class="mono">rag_retrieval_service</span>, and <span class="mono">hrb_platform_components</span> — every repo built during the actual split. <span class="mono">hrb_chatbot_service</span> (pre-split) and <span class="mono">hrb_chatbot_ui</span> (frontend, different language) don't depend on it.</p>
+  <p style="margin:0;font-size:11.5px;color:var(--text-muted);line-height:1.5;">Used by <span class="mono">hrb_api_gateway_service</span>, <span class="mono">hrb_rag_ingestion_service</span>, <span class="mono">hrb_rag_retrieval_service</span>, and <span class="mono">hrb_platform_components</span> — every repo built during the actual split. <span class="mono">hrb_chatbot_service</span> (pre-split) and <span class="mono">hrb_chatbot_ui</span> (frontend, different language) don't depend on it.</p>
 </section>
 
 <section>
@@ -195,8 +195,8 @@
       <tr><td class="key">hrb_chatbot_ui</td><td><span class="pill live">live</span></td><td class="mono" style="font-size:10.5px;">hrb-chatbot-ui.rvsree.dev</td><td>Frontend SPA — the only thing end users talk to directly</td></tr>
       <tr><td class="key">hrb_api_gateway_service</td><td><span class="pill live">live</span></td><td class="mono" style="font-size:10.5px;">necxf9n7mv.us-east-1.awsapprunner.com</td><td>Single public entry point — RBAC/CORS/rate-limit/contract validation</td></tr>
       <tr><td class="key">hrb_chatbot_service</td><td><span class="pill live">live</span></td><td class="mono" style="font-size:10.5px;">hrb-chatbot.rvsree.dev</td><td>Pre-split monolith — still the real retrieval backend behind the Gateway</td></tr>
-      <tr><td class="key">rag_ingestion_service</td><td><span class="pill live">live, cut over</span></td><td class="mono" style="font-size:10.5px;">wkfgxanevz.us-east-1.awsapprunner.com</td><td>Extract→chunk→embed→index — both sync (App Runner) and async (Lambda) paths real</td></tr>
-      <tr><td class="key">rag_retrieval_service</td><td><span class="pill standalone">standalone</span></td><td class="mono" style="font-size:10.5px;">mpm3qjkbkc.us-east-1.awsapprunner.com</td><td>Decompose→retrieve→generate — built, deployed, verified, deliberately not cut over</td></tr>
+      <tr><td class="key">hrb_rag_ingestion_service</td><td><span class="pill live">live, cut over</span></td><td class="mono" style="font-size:10.5px;">wkfgxanevz.us-east-1.awsapprunner.com</td><td>Extract→chunk→embed→index — both sync (App Runner) and async (Lambda) paths real</td></tr>
+      <tr><td class="key">hrb_rag_retrieval_service</td><td><span class="pill standalone">standalone</span></td><td class="mono" style="font-size:10.5px;">mpm3qjkbkc.us-east-1.awsapprunner.com</td><td>Decompose→retrieve→generate — built, deployed, verified, deliberately not cut over</td></tr>
       <tr><td class="key">hrb_platform_components</td><td><span class="pill live">live</span></td><td class="mono" style="font-size:10.5px;">pgmzxemv5z.us-east-1.awsapprunner.com</td><td>CI/CD dashboard, interview Q&amp;A, MCP tool catalog</td></tr>
       <tr><td class="key">hrb-common-libs</td><td><span class="pill live">in use</span></td><td class="mono" style="font-size:10.5px;">— (library, no URL)</td><td>Shared connectors + observability, pip-installed by 4 of the above</td></tr>
     </tbody>
@@ -205,7 +205,7 @@
   <p style="margin:0;font-size:11.5px;color:var(--text-muted);line-height:1.5;">Not counted above: <span class="mono">hrb_lms_mcp</span> (a separate project, pre-existing, also live at <span class="mono">hrb-lms-mcp.rvsree.dev</span>) and the 2 on-hold future services (<span class="mono">chat_audio_service</span>, <span class="mono">employee_401k_service</span>) covered in <span class="mono">service-boundary-decision.html</span> §1.</p>
 </section>
 
-<div class="ribbon">6 of 7 planned services are real and deployed · rag_retrieval_service's cutover is the one open decision left on this picture</div>
+<div class="ribbon">6 of 7 planned services are real and deployed · hrb_rag_retrieval_service's cutover is the one open decision left on this picture</div>
 
 <footer>2026-10-23 · companion to <code>service-boundary-decision.html</code>, <code>microservices-rollout-plan.html</code>, <code>microservices-interface-matrix.html</code> · see <code>reengineering-status-board.html</code> for per-phase test/build/deploy/smoke detail</footer>
 

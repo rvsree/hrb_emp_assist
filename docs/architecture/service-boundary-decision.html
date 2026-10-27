@@ -172,7 +172,7 @@
 
 <div class="status-banner">
   <span class="btitle">✓ Real status, 2026-10-23 — 6 of the 7 planned services are now real and deployed</span>
-  <p><code class="mono">rag_ingestion_service</code>, <code class="mono">rag_retrieval_service</code>, and <code class="mono">api_gateway_service</code> all moved from PLANNED to built, deployed, and live - matching the split §1 recommended. One real divergence from this doc's own §1 call ("Support is not its own service"): Support <b>did</b> become its own separate deployable, <code class="mono">hrb_platform_components</code> - not co-located inside <code class="mono">rag_retrieval_service</code> as recommended here. <code class="mono">hrb_lms_mcp</code>'s own AWS deploy (flagged as "still your open plan" below) is also done, with real app-to-app OAuth2 live between it and the backend. <code class="mono">chat_audio_service</code>/<code class="mono">employee_401k_service</code> remain not started, on hold by explicit choice - this doc's "7 real services" ceiling is still accurate, just with 6 of 7 done instead of 3.</p>
+  <p><code class="mono">hrb_rag_ingestion_service</code>, <code class="mono">hrb_rag_retrieval_service</code>, and <code class="mono">api_gateway_service</code> all moved from PLANNED to built, deployed, and live - matching the split §1 recommended. One real divergence from this doc's own §1 call ("Support is not its own service"): Support <b>did</b> become its own separate deployable, <code class="mono">hrb_platform_components</code> - not co-located inside <code class="mono">hrb_rag_retrieval_service</code> as recommended here. <code class="mono">hrb_lms_mcp</code>'s own AWS deploy (flagged as "still your open plan" below) is also done, with real app-to-app OAuth2 live between it and the backend. <code class="mono">chat_audio_service</code>/<code class="mono">employee_401k_service</code> remain not started, on hold by explicit choice - this doc's "7 real services" ceiling is still accurate, just with 6 of 7 done instead of 3.</p>
 </div>
 
 <div class="quickfact">
@@ -195,10 +195,10 @@
   </div>
   <div class="split-arrow">↓ recommended split of hrb_chatbot_service — done, 2026-10-23 ↓</div>
   <div class="service-grid">
-    <div class="service-card exists"><span class="status-tag">BUILT, LIVE</span><span class="sname">rag_ingestion_service</span><span class="sdesc">does: extract → chunk → embed → index. Deployed, real cutover done (SQS trigger switched from the old Lambda)</span></div>
-    <div class="service-card exists"><span class="status-tag">BUILT, LIVE</span><span class="sname">rag_retrieval_service</span><span class="sdesc">does: decompose → retrieve → generate, incl. single/multi-agentic-rag + HITL + conversation memory. Deployed, independently verified - not yet cut over</span></div>
+    <div class="service-card exists"><span class="status-tag">BUILT, LIVE</span><span class="sname">hrb_rag_ingestion_service</span><span class="sdesc">does: extract → chunk → embed → index. Deployed, real cutover done (SQS trigger switched from the old Lambda)</span></div>
+    <div class="service-card exists"><span class="status-tag">BUILT, LIVE</span><span class="sname">hrb_rag_retrieval_service</span><span class="sdesc">does: decompose → retrieve → generate, incl. single/multi-agentic-rag + HITL + conversation memory. Deployed, independently verified - not yet cut over</span></div>
   </div>
-  <div class="fix-note"><span>⚠</span><div><b>Real divergence from this call:</b> Support did <b>not</b> stay co-located inside <code class="mono">rag_retrieval_service</code> - it became its own separate service, <code class="mono">hrb_platform_components</code> (CI/CD dashboard, interview-qa, mcp-tools, admin docs), built and deployed independently. See <code class="mono">microservices-interface-matrix.html</code> §5 for the original co-location call this reversed.</div></div>
+  <div class="fix-note"><span>⚠</span><div><b>Real divergence from this call:</b> Support did <b>not</b> stay co-located inside <code class="mono">hrb_rag_retrieval_service</code> - it became its own separate service, <code class="mono">hrb_platform_components</code> (CI/CD dashboard, interview-qa, mcp-tools, admin docs), built and deployed independently. See <code class="mono">microservices-interface-matrix.html</code> §5 for the original co-location call this reversed.</div></div>
   <div class="service-grid">
     <div class="service-card exists"><span class="status-tag">BUILT, LIVE</span><span class="sname">api_gateway_service <span style="font-weight:500;opacity:.7;">(fka BFF)</span></span><span class="sdesc">Gateway half (session/RBAC/CORS/rate-limit/contract validation) built and live; <span class="mono">hrb_chatbot_ui</span> cut over to it. Aggregation half still waits for more backends — see §4</span></div>
     <div class="service-card exists"><span class="status-tag">BUILT, LIVE</span><span class="sname">hrb_platform_components</span><span class="sdesc">not in this doc's original inventory — Support became its own service instead of co-locating (see note above)</span></div>
@@ -209,11 +209,11 @@
   <table class="schema-table">
     <thead><tr><th>#</th><th>Service</th><th>Status</th><th>Notes</th></tr></thead>
     <tbody>
-      <tr><td>1</td><td class="schema-name">hrb_chatbot_service</td><td><span class="status-chip exists">exists</span></td><td>still live — the production backend for retrieval traffic, pending rag_retrieval_service's cutover</td></tr>
+      <tr><td>1</td><td class="schema-name">hrb_chatbot_service</td><td><span class="status-chip exists">exists</span></td><td>still live — the production backend for retrieval traffic, pending hrb_rag_retrieval_service's cutover</td></tr>
       <tr><td>2</td><td class="schema-name">hrb_chatbot_ui</td><td><span class="status-chip exists">exists</span></td><td>frontend, now cut over to call api_gateway_service instead of #1 directly</td></tr>
       <tr><td>3</td><td class="schema-name">hrb_lms_mcp</td><td><span class="status-chip exists">exists</span></td><td>deployed to AWS, real app-to-app OAuth2 live</td></tr>
-      <tr><td>4</td><td class="schema-name">rag_ingestion_service</td><td><span class="status-chip exists">built, live</span></td><td>deployed, real cutover done (SQS trigger switched)</td></tr>
-      <tr><td>5</td><td class="schema-name">rag_retrieval_service</td><td><span class="status-chip exists">built, live</span></td><td>deployed, independently verified — not yet cut over. Does NOT house Support (see note above)</td></tr>
+      <tr><td>4</td><td class="schema-name">hrb_rag_ingestion_service</td><td><span class="status-chip exists">built, live</span></td><td>deployed, real cutover done (SQS trigger switched)</td></tr>
+      <tr><td>5</td><td class="schema-name">hrb_rag_retrieval_service</td><td><span class="status-chip exists">built, live</span></td><td>deployed, independently verified — not yet cut over. Does NOT house Support (see note above)</td></tr>
       <tr><td>6</td><td class="schema-name">api_gateway_service</td><td><span class="status-chip exists">built, live</span></td><td>deployed, UI cut over to it</td></tr>
       <tr><td>7</td><td class="schema-name">hrb_platform_components</td><td><span class="status-chip exists">built, live</span></td><td>not in this doc's original inventory — houses what Support was meant to be</td></tr>
       <tr><td>8</td><td class="schema-name">chat_audio_service</td><td><span class="status-chip planned">on hold</span></td><td>future capability, no code yet</td></tr>
@@ -321,8 +321,8 @@
   <h2><span class="h2-num">7</span>Remaining blind spots <span class="h2-sub">— not yet decided, flagging rather than guessing</span></h2>
   <div class="fix-note"><span>⚠</span><div>
     <ul style="margin:0;padding-left:18px;line-height:1.6;">
-      <li><b>Schema/service name pairing:</b> <code class="mono">rag_retrieval_service</code> pairs cleanly with schema <code class="mono">rag_retrieval</code> now — confirm you're OK with "retrieval" over "search" project-wide.</li>
-      <li><b>"_service" suffix isn't applied consistently:</b> new names get it (<code class="mono">rag_ingestion_service</code>), existing ones don't (<code class="mono">hrb_chatbot_ui</code>, <code class="mono">hrb_lms_mcp</code>) — decide: grandfather the old names, or rename those too.</li>
+      <li><b>Schema/service name pairing:</b> <code class="mono">hrb_rag_retrieval_service</code> pairs cleanly with schema <code class="mono">rag_retrieval</code> now — confirm you're OK with "retrieval" over "search" project-wide.</li>
+      <li><b>"_service" suffix isn't applied consistently:</b> new names get it (<code class="mono">hrb_rag_ingestion_service</code>), existing ones don't (<code class="mono">hrb_chatbot_ui</code>, <code class="mono">hrb_lms_mcp</code>) — decide: grandfather the old names, or rename those too.</li>
       <li><b>Contract versioning:</b> once Gateway and backend services deploy separately, request/response shapes need a shared, independently-versioned contracts package (or Gateway validates against each backend's live OpenAPI schema) — not yet designed.</li>
       <li><b>employee_401k_service's internal shape:</b> hub + sub-agents (loan, withdrawal, transfer, retirement) maps directly onto the Planner → domain-agents → Reviewer pattern already built for multi-agentic-rag — reuse that shape rather than inventing a new one.</li>
       <li><b>Cost, still:</b> the Gateway's case is stronger now, but it's still a new always-on App Runner service with its own recurring cost — the AWS-bill tension from v1 doesn't go away just because the justification improved.</li>

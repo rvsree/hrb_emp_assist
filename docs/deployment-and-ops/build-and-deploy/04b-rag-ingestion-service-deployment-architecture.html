@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="claude:viewport-fit-sides" content="cover">
-<title>04 · rag_ingestion_service Deployment Architecture</title>
+<title>04 · hrb_rag_ingestion_service Deployment Architecture</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800;900&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
   :root {
@@ -80,8 +80,8 @@
 <div class="wrap">
 
 <header>
-  <span class="eyebrow">04 of 7 · rag_ingestion_service · deployment architecture · 2026-10-23</span>
-  <h1>Deployment Architecture — rag_ingestion_service</h1>
+  <span class="eyebrow">04 of 7 · hrb_rag_ingestion_service · deployment architecture · 2026-10-23</span>
+  <h1>Deployment Architecture — hrb_rag_ingestion_service</h1>
   <p class="subtitle">Two real, independently running deployments of the same codebase - an App Runner container for the sync admin-triggered upload, and a Lambda for the async S3-triggered path. Both write to the same Pinecone index and the same Postgres doc-metadata table.</p>
 </header>
 
@@ -127,7 +127,7 @@
   <p style="margin:0;font-size:11.5px;color:var(--text-muted);line-height:1.5;">Two separate GitHub Actions workflows deploy independently - a Lambda-only change never redeploys the App Runner service, and vice versa.</p>
 </section>
 
-<div class="nav-strip"><a href="04a-rag-ingestion-service-build-process.html">← Build process</a><a href="05a-rag-retrieval-service-build-process.html">Next: 05 rag_retrieval_service →</a></div>
+<div class="nav-strip"><a href="04a-rag-ingestion-service-build-process.html">← Build process</a><a href="05a-rag-retrieval-service-build-process.html">Next: 05 hrb_rag_retrieval_service →</a></div>
 <footer>2026-10-23 · part of the 7-service build-and-deploy sequence</footer>
 </div>
 </body>

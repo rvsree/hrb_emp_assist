@@ -74,8 +74,8 @@
     <div class="diagram">
       <div class="stack-row">
         <div class="stack-box">api_gateway_service</div>
-        <div class="stack-box">rag_ingestion_service</div>
-        <div class="stack-box">rag_retrieval_service</div>
+        <div class="stack-box">hrb_rag_ingestion_service</div>
+        <div class="stack-box">hrb_rag_retrieval_service</div>
         <div class="stack-box">chat_audio_service</div>
         <div class="stack-box">employee_401k_service</div>
       </div>
@@ -118,7 +118,7 @@
 
   <section class="panel">
     <div class="panel-head"><span class="panel-num">3</span><span class="panel-title">Request flow with this layer active</span></div>
-    <p>A request enters <span class="mono">api_gateway_service</span> → Observability assigns a request_id → the Gateway forwards to <span class="mono">rag_retrieval_service</span> with that id in a header → Resiliency wraps its calls to Postgres/vector store/LLM provider, each wrapped call logged with the same request_id → if the LLM provider times out repeatedly, Resiliency's circuit breaker opens and the service returns a typed degraded-service error instead of hanging → the whole trace is one LangSmith run, filterable by request_id, regardless of how many services it crossed.</p>
+    <p>A request enters <span class="mono">api_gateway_service</span> → Observability assigns a request_id → the Gateway forwards to <span class="mono">hrb_rag_retrieval_service</span> with that id in a header → Resiliency wraps its calls to Postgres/vector store/LLM provider, each wrapped call logged with the same request_id → if the LLM provider times out repeatedly, Resiliency's circuit breaker opens and the service returns a typed degraded-service error instead of hanging → the whole trace is one LangSmith run, filterable by request_id, regardless of how many services it crossed.</p>
   </section>
 
   <footer>NFR Components — overview.html, spec.html, architecture.html, design.html, decisions.html</footer>

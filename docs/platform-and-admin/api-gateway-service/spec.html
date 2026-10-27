@@ -99,7 +99,7 @@
     <ul>
       <li>A request with a role not permitted on the target route gets a 403 from the Gateway, and the backend service never sees the request at all.</li>
       <li>60 requests in 60 seconds from one <span class="mono">employee_id</span> past the configured limit get a 429, and the limit holds even when tested against 2 different Gateway replicas.</li>
-      <li>Stopping <span class="mono">rag_retrieval_service</span> entirely and sending it a request through the Gateway returns a clean 503 with a typed error body, not a hung connection or a raw stack trace.</li>
+      <li>Stopping <span class="mono">hrb_rag_retrieval_service</span> entirely and sending it a request through the Gateway returns a clean 503 with a typed error body, not a hung connection or a raw stack trace.</li>
       <li>The existing Postman collection's happy-path requests, pointed at the Gateway instead of directly at <span class="mono">hrb_chatbot_service</span>, pass unchanged.</li>
     </ul>
   </section>

@@ -65,7 +65,7 @@
 
   <section class="panel">
     <h2>Purpose</h2>
-    <p>Splitting hrb_chatbot_service into multiple services (api_gateway_service, rag_ingestion_service, rag_retrieval_service, chat_audio_service, employee_401k_service) means every one of them independently needs retry/backoff on flaky calls, a circuit breaker on a dependency that's down, structured logging with a correlating request_id, and a security baseline (secrets in Secrets Manager, never plaintext env; no service trusts an unsigned identity it didn't itself validate). Building each of these five times, once per service, is how services silently drift - one gets a circuit breaker, another doesn't, and an outage three weeks later is debugged blind because only two of five services actually log request_id. This document defines the one shared shape, built once, before the services that depend on it.</p>
+    <p>Splitting hrb_chatbot_service into multiple services (api_gateway_service, hrb_rag_ingestion_service, hrb_rag_retrieval_service, chat_audio_service, employee_401k_service) means every one of them independently needs retry/backoff on flaky calls, a circuit breaker on a dependency that's down, structured logging with a correlating request_id, and a security baseline (secrets in Secrets Manager, never plaintext env; no service trusts an unsigned identity it didn't itself validate). Building each of these five times, once per service, is how services silently drift - one gets a circuit breaker, another doesn't, and an outage three weeks later is debugged blind because only two of five services actually log request_id. This document defines the one shared shape, built once, before the services that depend on it.</p>
   </section>
 
   <section class="panel">

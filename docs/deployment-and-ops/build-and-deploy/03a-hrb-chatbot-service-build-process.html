@@ -77,7 +77,7 @@
     <span class="stage-label">stage 1 — builder</span>
     <div class="step"><span class="sname">pip install -r requirements.txt into /opt/venv</span><span class="sdesc">Standard dependency install, cached as its own Docker layer</span></div>
     <div class="arrow">↓</div>
-    <div class="step"><span class="sname">python -m spacy download en_core_web_lg</span><span class="sdesc">Presidio's analyzer needs this model for the "mask sensitive data" guardrail. Missing once in production (Phase 82) - "every query was blocked" until this line existed. The exact same bug reappeared in rag_retrieval_service's own port, found and fixed live this session.</span></div>
+    <div class="step"><span class="sname">python -m spacy download en_core_web_lg</span><span class="sdesc">Presidio's analyzer needs this model for the "mask sensitive data" guardrail. Missing once in production (Phase 82) - "every query was blocked" until this line existed. The exact same bug reappeared in hrb_rag_retrieval_service's own port, found and fixed live this session.</span></div>
     <span class="stage-label">stage 2 — runtime</span>
     <div class="arrow">↓</div>
     <div class="step"><span class="sname">FROM python:3.12-slim AS runtime, non-root user hrbchat</span><span class="sdesc">Fresh base, no build tooling carried over</span></div>

@@ -68,7 +68,7 @@
   <section class="panel">
     <div class="panel-head"><span class="panel-num">1</span><span class="panel-title">Upstream / downstream</span></div>
     <p><b>Upstream (calls it):</b> <span class="mono">hrb_chatbot_ui</span> only - this service has exactly one caller.</p>
-    <p><b>Downstream (it calls):</b> today, <span class="mono">hrb_chatbot_service</span> (the undivided backend). After Phase 2: <span class="mono">rag_ingestion_service</span>, <span class="mono">rag_retrieval_service</span>. Later: <span class="mono">chat_audio_service</span>, <span class="mono">employee_401k_service</span>. Never calls <span class="mono">hrb_lms_mcp</span> directly - that stays a service-to-service call made by whichever backend needs it.</p>
+    <p><b>Downstream (it calls):</b> today, <span class="mono">hrb_chatbot_service</span> (the undivided backend). After Phase 2: <span class="mono">hrb_rag_ingestion_service</span>, <span class="mono">hrb_rag_retrieval_service</span>. Later: <span class="mono">chat_audio_service</span>, <span class="mono">employee_401k_service</span>. Never calls <span class="mono">hrb_lms_mcp</span> directly - that stays a service-to-service call made by whichever backend needs it.</p>
   </section>
 
   <section class="panel">

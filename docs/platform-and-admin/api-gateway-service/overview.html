@@ -65,7 +65,7 @@
 
   <section class="panel">
     <h2>Purpose</h2>
-    <p>Today, <span class="mono">hrb_chatbot_service</span> handles RBAC (<span class="mono">api/gateway/rbac.py</span>), CORS (<span class="mono">main.py</span>'s <span class="mono">CORSMiddleware</span>), and no rate-limiting worth the name, all inside the one service that also runs RAG retrieval. Once that splits into <span class="mono">rag_ingestion_service</span>/<span class="mono">rag_retrieval_service</span>, those cross-cutting concerns can't live inside either of them - the Gateway exists to own them once, for every backend service behind it, including ones that don't exist yet (chat_audio_service, employee_401k_service).</p>
+    <p>Today, <span class="mono">hrb_chatbot_service</span> handles RBAC (<span class="mono">api/gateway/rbac.py</span>), CORS (<span class="mono">main.py</span>'s <span class="mono">CORSMiddleware</span>), and no rate-limiting worth the name, all inside the one service that also runs RAG retrieval. Once that splits into <span class="mono">hrb_rag_ingestion_service</span>/<span class="mono">hrb_rag_retrieval_service</span>, those cross-cutting concerns can't live inside either of them - the Gateway exists to own them once, for every backend service behind it, including ones that don't exist yet (chat_audio_service, employee_401k_service).</p>
   </section>
 
   <section class="panel">
@@ -87,7 +87,7 @@
 
   <section class="panel">
     <h2>Where this fits in the microservices rollout</h2>
-    <p>Phase 1 - the first service actually built, after the Phase 0 prerequisites (NFR Components, Common-Libs Connectors, schema migration). Built additive: it fronts the still-undivided <span class="mono">hrb_chatbot_service</span> first, proving itself before <span class="mono">rag_ingestion_service</span>/<span class="mono">rag_retrieval_service</span> even exist as separate things to route between.</p>
+    <p>Phase 1 - the first service actually built, after the Phase 0 prerequisites (NFR Components, Common-Libs Connectors, schema migration). Built additive: it fronts the still-undivided <span class="mono">hrb_chatbot_service</span> first, proving itself before <span class="mono">hrb_rag_ingestion_service</span>/<span class="mono">hrb_rag_retrieval_service</span> even exist as separate things to route between.</p>
   </section>
 
   <div class="hub-grid">

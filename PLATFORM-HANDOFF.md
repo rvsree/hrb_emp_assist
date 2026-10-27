@@ -22,8 +22,8 @@ deliberate pause, not an oversight (see "Open decisions" below).
 | `hrb_chatbot_service` | FastAPI RAG backend - the main project | `feature-hrb-chatbot-subdomain` | 14 | `github.com/rvsree/hrb_chatbot_service` |
 | `hrb_chatbot_ui` | React/TS frontend | `master` | 8 | `github.com/rvsree/hrb_chatbot_ui` |
 | `hrb_api_gateway_service` | API gateway microservice | `master` | 1 | `github.com/rvsree/hrb_api_gateway_service` |
-| `rag_ingestion_service` | Ingestion pipeline (Lambda-based) | `master` | 1 | `github.com/rvsree/rag_ingestion_service` |
-| `rag_retrieval_service` | Retrieval microservice | `master` | 1 | `github.com/rvsree/rag_retrieval_service` |
+| `hrb_rag_ingestion_service` | Ingestion pipeline (Lambda-based) | `master` | 1 | `github.com/rvsree/hrb_rag_ingestion_service` |
+| `hrb_rag_retrieval_service` | Retrieval microservice | `master` | 1 | `github.com/rvsree/hrb_rag_retrieval_service` |
 | `hrb_platform_components` | Shared platform infra | `master` | 1 | `github.com/rvsree/hrb_platform_components` |
 | `hrb-common-libs` | Shared Python library (11 real extras) | `master` | 1 | `github.com/rvsree/hrb-common-libs` |
 
@@ -45,8 +45,8 @@ and GitHub connection are unaffected by living inside `hrb_emp_assist`.
    run** (needs explicit go-ahead; see "Open decisions").
 4. Overhauled all 7 repos' own `README.md` files, FDE-style (quickstart,
    docs index, "for reviewers" fast path), cross-linking the new diagrams.
-   Full rewrites: `hrb_api_gateway_service`, `rag_ingestion_service`,
-   `rag_retrieval_service`, `hrb_platform_components`, `hrb-common-libs`.
+   Full rewrites: `hrb_api_gateway_service`, `hrb_rag_ingestion_service`,
+   `hrb_rag_retrieval_service`, `hrb_platform_components`, `hrb-common-libs`.
    Light-touch additions only: `hrb_chatbot_service`, `hrb_chatbot_ui`.
 5. Created this parent folder and copied/moved all 7 repos into it as
    children (6 moved directly; `hrb_chatbot_service` needed a **manual
