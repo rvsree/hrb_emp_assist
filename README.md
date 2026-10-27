@@ -35,6 +35,70 @@ any persona from `hrb_chatbot_service/docs/agent-reference/KNOWN-PERSONAS.md`
 for cost control (`scripts/apprunner-switch.sh {pause|resume|status}`) - if a
 request hangs instead of answering, they're spinning back up, not broken.
 
+## Tech stack
+
+The real technologies behind the 8 repos, grouped by category - not every
+dependency, just what each service's own README already names as "what's
+actually used." (Renders natively here on GitHub - unlike the `.drawio`/
+`.html` files elsewhere in this project, a fenced ` ```mermaid ` block
+needs no separate viewer.)
+
+```mermaid
+flowchart TD
+    HUB((HRB Chatbot<br/>Platform))
+    HUB --> BE[Backend<br/>Frameworks]
+    HUB --> AI[AI / RAG /<br/>Agents]
+    HUB --> DATA[Data &<br/>Storage]
+    HUB --> FE[Frontend]
+    HUB --> MCP[Protocols &<br/>Integration]
+    HUB --> INFRA[Infra &<br/>Deploy]
+
+    BE --> BE1[FastAPI]
+    BE --> BE2[Uvicorn]
+    BE --> BE3[FastMCP<br/>hrb_lms_mcp]
+
+    AI --> AI1[LangChain / LangGraph]
+    AI --> AI2[NeMo Guardrails]
+    AI --> AI3[Presidio + spaCy<br/>PII masking]
+    AI --> AI4[DeepEval<br/>eval harness]
+
+    DATA --> D1[Postgres / Neon]
+    DATA --> D2[Pinecone + Chroma]
+    DATA --> D3[Redis<br/>cache / rate-limit]
+
+    FE --> F1[React 19]
+    FE --> F2[TypeScript + Vite]
+    FE --> F3[React Router]
+
+    MCP --> M1[Model Context Protocol]
+    MCP --> M2[OAuth2 client-credentials]
+    MCP --> M3[SQLAlchemy]
+
+    INFRA --> I1[AWS App Runner]
+    INFRA --> I2[Docker, 2-stage builds]
+    INFRA --> I3[AWS Lambda + SQS<br/>async ingestion]
+    INFRA --> I4[GitHub Actions CI/CD]
+
+    classDef hub fill:#4C1D95,color:#fff,stroke:#2E1065,stroke-width:2px
+    classDef backend fill:#1D4ED8,color:#fff,stroke:#1E3A8A
+    classDef ai fill:#047857,color:#fff,stroke:#064E3B
+    classDef data fill:#B45309,color:#fff,stroke:#78350F
+    classDef frontend fill:#BE185D,color:#fff,stroke:#831843
+    classDef mcp fill:#7C3AED,color:#fff,stroke:#4C1D95
+    classDef infra fill:#475569,color:#fff,stroke:#1E293B
+
+    class HUB hub
+    class BE,BE1,BE2,BE3 backend
+    class AI,AI1,AI2,AI3,AI4 ai
+    class DATA,D1,D2,D3 data
+    class FE,F1,F2,F3 frontend
+    class MCP,M1,M2,M3 mcp
+    class INFRA,I1,I2,I3,I4 infra
+```
+
+Each repo's own README has a more detailed "Tech stack" table scoped to
+that service.
+
 ## What this platform actually does
 
 | Capability | What it means | Status |
