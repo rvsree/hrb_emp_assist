@@ -38,18 +38,48 @@ fast, not just read about it.
 | 401(k) loan guidance | A hub/sub-agent router (loan, withdrawal, transfer, retirement), reusing the planner→domain-agents pattern already proven in multi-agentic-rag | Design only |
 | Voice front door | Speech in, speech out — a transcription/synthesis wrapper in front of the existing chat capabilities | Design only |
 
+## Why this is 8 services, not 1
+
+This started as one FastAPI service doing ingestion, retrieval, and admin
+together. It's now 8 independently deployable services. That split wasn't
+aesthetic — three concrete things drove it:
+
+**Decoupling.** Each backend used to duplicate its own CORS, auth, and
+rate-limiting. Pulling that into one API Gateway (`hrb_api_gateway_service`)
+means every other service can lock its CORS down to "only accept traffic
+from the Gateway" and stop re-implementing the same cross-cutting code.
+
+**Scaling independently.** Ingestion is bursty and I/O-bound (PDF
+processing, embedding calls); retrieval is steady and compute-bound (LLM
+calls, vector search); admin/platform tooling is low-traffic. One shared
+deploy meant they could never scale or fail independently. Splitting them
+means they do.
+
+**Extensibility.** New capabilities — a 401(k) loan agent (A2A), a voice
+interface — can be added as new services without touching anything that
+already works, reusing the same Planner → domain-agent pattern already
+proven in `hrb_rag_retrieval_service`'s multi-agentic mode.
+
+**Where this actually stands today, not where it's "supposed" to be:** 7 of
+7 planned services are built and live. The one piece still catching up: the
+Gateway forwards every request to a single backend today — it doesn't yet
+aggregate across services the way a full API Gateway eventually will, and
+`hrb_rag_retrieval_service` is deployed and verified but not yet the one
+receiving real production traffic. Both are known, scoped next steps, not
+surprises.
+
 ## The 8 components
 
 | Repo | Role | Status |
 |---|---|---|
-| `hrb_chatbot_ui` | Frontend SPA (React) | Live |
-| `hrb_api_gateway_service` | Single public entry point — CORS, rate limiting, contract validation | Live |
-| `hrb_chatbot_service` | Pre-split monolith; still the real retrieval backend in production today | Live |
-| `rag_ingestion_service` | Extract → chunk → embed → index, sync + async paths | Live, cut over |
-| `rag_retrieval_service` | Decompose → retrieve → generate | Live, standalone (not yet cut over) |
-| `hrb_platform_components` | CI/CD dashboard, Interview Q&A, MCP tool catalog | Live |
-| `hrb-common-libs` | Shared connectors (observability/db/cache/auth/etc.), pip-installed via git tag | In use |
-| `hrb_lms_mcp` | Separate project — real leave/HR data, its own OAuth2 — not part of this parent folder | Live |
+| [`hrb_chatbot_ui`](https://github.com/rvsree/hrb_chatbot_ui) | Frontend SPA (React) | Live |
+| [`hrb_api_gateway_service`](https://github.com/rvsree/hrb_api_gateway_service) | Single public entry point — CORS, rate limiting, contract validation | Live |
+| [`hrb_chatbot_service`](https://github.com/rvsree/hrb_chatbot_service) | Pre-split monolith; still the real retrieval backend in production today | Live |
+| [`hrb_rag_ingestion_service`](https://github.com/rvsree/hrb_rag_ingestion_service) | Extract → chunk → embed → index, sync + async paths | Live, cut over |
+| [`hrb_rag_retrieval_service`](https://github.com/rvsree/hrb_rag_retrieval_service) | Decompose → retrieve → generate — multi-agentic modes, HITL, conversation memory | Live, standalone (not yet cut over) |
+| [`hrb_platform_components`](https://github.com/rvsree/hrb_platform_components) | CI/CD dashboard, Interview Q&A, MCP tool catalog | Live |
+| [`hrb-common-libs`](https://github.com/rvsree/hrb-common-libs) | Shared connectors (observability/db/cache/auth/etc.), pip-installed via git tag | In use |
+| [`hrb_lms_mcp`](https://github.com/rvsree/hrb_lms_mcp) | Real HR/leave data via MCP, real app-to-app OAuth2 — separate project, same platform | Live |
 
 Full detail, real resource identifiers, and the honest current-vs-target gap
 for each one: [docs/architecture/platform-overview.html](docs/architecture/platform-overview.html).
