@@ -24,8 +24,6 @@ fast, not just read about it.
 3. [docs/architecture/diagrams/README.md](docs/architecture/diagrams/README.md) —
    every current-state, target-state (scaling), and deployment diagram,
    indexed, as real editable `.drawio` files, not static images.
-4. [PLATFORM-HANDOFF.md](PLATFORM-HANDOFF.md) — if you're picking this up
-   with no prior context, written for exactly that.
 
 ## Live demo
 
@@ -187,17 +185,15 @@ here, under `docs/`. Service-specific docs stay inside each repo's own
 
 ## Operating this platform
 
-- **Cost control**: all AWS App Runner services pause by default — `scripts/apprunner-switch.sh {pause|resume|status}`. Resume before a demo, pause after. See [PLATFORM-HANDOFF.md](PLATFORM-HANDOFF.md) for the full cost-control story (an AWS Budget alert and a LangSmith spend limit are also in place).
+- **Cost control**: all AWS App Runner services pause by default — `scripts/apprunner-switch.sh {pause|resume|status}`. Resume before a demo, pause after (an AWS Budget alert and a LangSmith spend limit are also in place).
 - **Observability**: traces at [smith.langchain.com](https://smith.langchain.com) (`hrb_chatbot_service_prod` / `hrb_chatbot_service_local`), app logs in CloudWatch (`/aws/apprunner/hrb-chatbot/.../application`).
-- **Manual action items**: [sree-handoff.md](sree-handoff.md) — a plain checklist of things only a human can decide or do (not auto-actioned).
 
 ## Functional vs non-functional status — where this platform is, honestly
 
 This project tracks its own gaps openly rather than only showing what's
-done. See `PLATFORM-HANDOFF.md`'s "Open decisions" section and each
-repo's own `BACKLOG.md`/`ROADMAP.md` for the full, sequenced breakdown of
-what's built vs. planned (datasets, observability/governance, resiliency,
-memory architecture, and more).
+done. See each repo's own `BACKLOG.md`/`ROADMAP.md` for the full,
+sequenced breakdown of what's built vs. planned (datasets, observability/
+governance, resiliency, memory architecture, and more).
 
 ## Status
 
