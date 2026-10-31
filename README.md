@@ -1,9 +1,11 @@
 # hrb_emp_assist
 
 Parent project for the HRB (HR Benefits) chatbot platform — an HR benefits
-assistant built as an Interview Kickstart FDE (Forward Deployed Engineer)
-capstone, grown from a single monolith into an 8-repo platform (6
-deployed backend services, 1 frontend SPA, 1 shared library).
+assistant I'm building as a personal project, based on what I've been
+learning about agentic AI systems and blending it with my software
+engineering background to sharpen both. Grown from a single monolith
+into an 8-repo platform (6 deployed backend services, 1 frontend SPA, 1
+shared library).
 This folder holds all 8 of those components as independent git repos (each with
 its own GitHub remote and history, unaffected by living here), plus the
 platform-level documentation that spans more than one of them.
